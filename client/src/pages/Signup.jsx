@@ -3,22 +3,32 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    return setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   // console.log(formData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.username || !formData.email || !formData.password) {
+      setError("Fill in all fields");
+      return;
+    }
+    // if (!formData.password.length > 6) {
+    //   setError("Passwords should be minimum 6 characters");
+    //   return
+    // }
+  
     try {
       setLoading(true);
-      setError(false);
-
+      setError(""); // Clear any previous error message
+  
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -27,17 +37,20 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
       setLoading(false);
-      if (data.message !== "User created successflly") {
-        return setError(true);
-      }
+  
+      // if (data.message !== "User created successfully") {
+      //   setError("User creation failed"); // Set an appropriate error message here
+      //   return;
+      // }
       navigate("/sign-in");
     } catch (error) {
       setLoading(false);
-      setError(true);
+      setError("Error occurred during sign up");
     }
   };
+
+  console.log(error,"error");
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -77,7 +90,7 @@ export default function Signup() {
           <span className="text-blue-500">Sign in</span>
         </Link>
       </div>
-      <p className="text-red-700 mt-5">{error && "Something went wrong!"}</p>
+      <p className="text-red-700 mt-5">{error && <>{error}</>}</p>
     </div>
   );
 }

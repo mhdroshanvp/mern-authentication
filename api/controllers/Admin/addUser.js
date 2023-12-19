@@ -2,8 +2,7 @@ import User from "../../models/UserModal.js";
 import bcryptjs from "bcrypt";
 
 
-
- const addUser = async(req, res) => {
+const addUser = async(req, res) => {
     try {
         console.log('reached inside addUser')
         console.log('req.boyd', req.body)
@@ -21,9 +20,9 @@ import bcryptjs from "bcrypt";
     const finalRole = role || 'Customer';
 
         const hashedPassword =  bcryptjs.hashSync(password, 10)
-        console.log('hashedPasword, ', hashedPassword)
+        // console.log('hashedPasword, ', hashedPassword)
         const newUser = new User({ username, email, password: hashedPassword, role:finalRole });
-        console.log('new user ', newUser)
+        // console.log('new user ', newUser)
         try {
           await newUser.save();
           console.log('user created successfully')

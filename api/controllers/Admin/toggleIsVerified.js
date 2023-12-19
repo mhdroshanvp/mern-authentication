@@ -12,8 +12,8 @@ const toggleIsVerified = async (req, res) => {
       { isActive: !req.body.isActive }, // Update based on isActive
       
     );
-    console.log('updatedUser ', updatedUser.isActive);
-    console.log(updatedUser)
+    // console.log('updatedUser ', updatedUser.isActive);
+    // console.log(updatedUser)
 
     if (!updatedUser  === null) {
         console.log('error in updatedUser')
